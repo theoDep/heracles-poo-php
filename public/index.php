@@ -1,12 +1,17 @@
 <?php
 
 require '../src/Fighter.php';
+require '../src/Weapon.php';
+require '../src/Shield.php';
 
 /** ✅ DEBUT DE LA ZONE À MODIFIER ✅ **/
 
 
-$heracles = new Fighter('Heracles', 20, 6);
-$boar = new Fighter('Erymanthian Boar', 25, 12);
+$heracles = new Fighter('Heracles', 20, 6, 'heracles.svg');
+$boar = new Fighter('Erymanthian Boar', 25, 12, 'boar.svg');
+$heracles->setWeapon(new Weapon());
+$heracles->setShield(new Shield());
+
 
 /** FIN DE LA ZONE A MODIFIER **/
 /** ⛔ Ne pas modifier en dessous ⛔ **/
@@ -48,18 +53,18 @@ $boar = new Fighter('Erymanthian Boar', 25, 12);
         $i = 1;
 
         while ($heracles->isAlive() && $boar->isAlive()) : ?>
-            <section class="round">
-                <h2 class="number">Round <?= $i ?></h2>
-                <?php $heracles->fight($boar); ?>
-                <?php $boar->fight($heracles); ?>
-                <div class="life">
-                    <div><?= $heracles->getLife() ?></div>
-                    <progress max="<?= Fighter::MAX_LIFE ?>" value="<?= $heracles->getLife() ?>"></progress>
-                    <progress max="<?= Fighter::MAX_LIFE ?>" value="<?= $boar->getLife() ?>"></progress>
-                    <div><?= $boar->getLife() ?></div>
-                </div>
-                <?php $i++; ?>
-            </section>
+        <section class="round">
+            <h2 class="number">Round <?= $i ?></h2>
+            <?php $heracles->fight($boar); ?>
+            <?php $boar->fight($heracles); ?>
+            <div class="life">
+                <div><?= $heracles->getLife() ?></div>
+                <progress max="<?= Fighter::MAX_LIFE ?>" value="<?= $heracles->getLife() ?>"></progress>
+                <progress max="<?= Fighter::MAX_LIFE ?>" value="<?= $boar->getLife() ?>"></progress>
+                <div><?= $boar->getLife() ?></div>
+            </div>
+            <?php $i++; ?>
+        </section>
         <?php endwhile; ?>
 
         <?php

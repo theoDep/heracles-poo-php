@@ -10,14 +10,22 @@ class Fighter
     private int $dexterity;
     private string $image;
 
+    private string $damage;
+
     private int $life = self::MAX_LIFE;
-    
+
+    private ?Weapon $weapon = null;
+
+    private ?Shield $shield = null;
+
+
     public function __construct(
         string $name,
         int $strength = 10,
         int $dexterity = 5,
         string $image = 'fighter.svg'
-    ) {
+    )
+    {
         $this->name = $name;
         $this->strength = $strength;
         $this->dexterity = $dexterity;
@@ -37,17 +45,38 @@ class Fighter
         return 'assets/images/' . $this->image;
     }
 
+    public function getWeapon(): ?Weapon
+    {
+        return $this->weapon;
+    }
+
+    public function getShield(): ?Shield
+    {
+        return $this->shield;
+    }
+
     public function setImage(string $image): void
     {
         $this->image = $image;
+    }
+
+    public function setWeapon(Weapon $weapon): void
+    {
+        $this->weapon = $weapon;
+    }
+
+    public function setShield(Shield $shield): void
+    {
+        $this->shield = $shield;
     }
 
 
 
     public function fight(Fighter $adversary): void
     {
-        $damage = rand(1, $this->getStrength()) - $adversary->getDexterity();
-        if ($damage < 0) {
+        $damage = rand(1, $this->getDamage()) - $adversary->getDefense();
+        if ($damage < 0)
+        {
             $damage = 0;
         }
         $adversary->setLife($adversary->getLife() - $damage);
@@ -69,7 +98,8 @@ class Fighter
      */
     public function setLife($life)
     {
-        if($life < 0) {
+        if ($life < 0)
+        {
             $life = 0;
         }
         $this->life = $life;
@@ -121,5 +151,29 @@ class Fighter
         $this->dexterity = $dexterity;
 
         return $this;
+    }
+
+    public function getDamage(): int
+    {
+        $damage = $this->getStrength();
+
+        if (isset($this->weapon))
+        {
+            $damage += $this->weapon->getDamage();
+        }
+
+        return $damage;
+    }
+
+    public function getDefense(): int
+    {
+        $defense = $this->getDexterity();
+
+        if (isset($this->shield))
+        {
+            $defense += $this->shield->getDefense();
+        }
+
+        return $defense;
     }
 }
