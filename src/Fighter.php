@@ -23,12 +23,13 @@ abstract class Fighter
         int $strength = 10,
         int $dexterity = 5,
         string $image = 'fighter.svg',
+        int $initialExperience = 500,
     )
     {
         $this->name = $name;
         $this->strength = $strength;
         $this->dexterity = $dexterity;
-        $this->experience = get_class($this) === 'App\Hero' ? 1000 : 500;
+        $this->experience = $initialExperience;
         $this->image = $image;
     }
 
