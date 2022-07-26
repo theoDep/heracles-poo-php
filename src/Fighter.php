@@ -2,13 +2,16 @@
 
 namespace App;
 
-class Fighter
+use App\Level;
+
+abstract class Fighter
 {
     public const MAX_LIFE = 100;
 
     private string $name;
     private int $strength;
     private int $dexterity;
+    private int $experience;
     private string $image = 'fighter.svg';
     private int $life = self::MAX_LIFE;
     private int $x;
@@ -19,15 +22,17 @@ class Fighter
         string $name,
         int $strength = 10,
         int $dexterity = 5,
-        string $image = 'fighter.svg'
-    ) {
+        string $image = 'fighter.svg',
+    )
+    {
         $this->name = $name;
         $this->strength = $strength;
         $this->dexterity = $dexterity;
+        $this->experience = get_class($this) === 'App\Hero' ? 1000 : 500;
         $this->image = $image;
     }
 
-    
+
     public function getDamage(): int
     {
         $damage = $this->getStrength();
@@ -64,7 +69,8 @@ class Fighter
     public function fight(Fighter $adversary): void
     {
         $damage = rand(1, $this->getDamage()) - $adversary->getDefense();
-        if ($damage < 0) {
+        if ($damage < 0)
+        {
             $damage = 0;
         }
         $adversary->setLife($adversary->getLife() - $damage);
@@ -84,7 +90,8 @@ class Fighter
      */
     public function setLife(int $life)
     {
-        if ($life < 0) {
+        if ($life < 0)
+        {
             $life = 0;
         }
         $this->life = $life;
@@ -100,7 +107,7 @@ class Fighter
      */
     public function getStrength(): int
     {
-        return $this->strength;
+        return $this->strength * Level::calculate($this->experience);
     }
 
     /**
@@ -117,7 +124,7 @@ class Fighter
      */
     public function getDexterity(): int
     {
-        return $this->dexterity;
+        return $this->dexterity * Level::calculate($this->experience);
     }
 
     /**
@@ -131,7 +138,7 @@ class Fighter
 
     /**
      * Get the value of x
-     */ 
+     */
     public function getX(): int
     {
         return $this->x;
@@ -139,7 +146,7 @@ class Fighter
 
     /**
      * Set the value of x
-     */ 
+     */
     public function setX($x): void
     {
         $this->x = $x;
@@ -147,7 +154,7 @@ class Fighter
 
     /**
      * Get the value of y
-     */ 
+     */
     public function getY(): int
     {
         return $this->y;
@@ -155,7 +162,7 @@ class Fighter
 
     /**
      * Set the value of y
-    */ 
+     */
     public function setY($y): void
     {
         $this->y = $y;
@@ -163,9 +170,19 @@ class Fighter
 
     /**
      * Get the value of range
-     */ 
+     */
     public function getRange(): float
     {
         return $this->range;
+    }
+
+    public function getExperience(): int
+    {
+        return $this->experience;
+    }
+
+    public function setExperience(int $experience): void
+    {
+        $this->experience = $experience;
     }
 }

@@ -20,12 +20,12 @@ $arena = $_SESSION['arena'] ?? null;
 
 /** initialisation **/
 if (!$arena instanceof Arena) {
-    $heracles = new Hero('Heracles', 30, 6, 'heracles.svg');
-    $horse1 = new Monster('Mare 1', 25, 12, 'horse.svg');
-    $horse2 = new Monster('Mare 2', 25, 12, 'horse.svg');
-    $horse3 = new Monster('Mare 3', 25, 12, 'horse.svg');
-    $horse4 = new Monster('Mare 4', 25, 12, 'horse.svg');
-    
+    $heracles = new Hero('Heracles', 20, 6, 'heracles.svg');
+    $horse1 = new Monster('Mare 1', 50, 12, 'horse.svg');
+    $horse2 = new Monster('Mare 2', 50, 12, 'horse.svg');
+    $horse3 = new Monster('Mare 3', 50, 12, 'horse.svg');
+    $horse4 = new Monster('Mare 4', 50, 12, 'horse.svg');
+        
     $arena = new Arena($heracles, [$horse1, $horse2, $horse3, $horse4]);
     $heracles->setX(0);
     $heracles->setY(0);
@@ -41,10 +41,11 @@ if (!$arena instanceof Arena) {
     $sword = new Weapon(10);
     $bow = new Weapon(8, 5, 'bow.svg');
 
-    $heracles->setWeapon($sword);
+    $heracles->setWeapon($bow);
 
     $shield = new Shield();
     $heracles->setShield($shield);
+
 }
 $_SESSION['arena'] = $arena;
 
@@ -86,17 +87,17 @@ try {
                         <img src="<?= $arena->getHero()->getImage() ?>" alt="heracles">
                         <figcaption><?= $arena->getHero()->getName() ?></figcaption>
                     </figure>
-                    <progress class="life" max="100"  value="<?= $arena->getHero()->getLife() ?>"></progress>
+                    <progress class="life" max="100" value="<?= $arena->getHero()->getLife() ?>"></progress>
                 </div>
             </a>
             <?php foreach ($arena->getMonsters() as $monster) : ?>
-                <div class="fighter">
-                    <figure class="monster">
-                        <img src="<?= $monster->getImage() ?>" alt="monster">
-                        <figcaption><?= $monster->getName() . '(' . $monster->getLife() . ')' ?></figcaption>
-                    </figure>
-                    <progress class="life" max="100" value="<?= $monster->getLife() ?>"></progress>
-                </div>
+            <div class="fighter">
+                <figure class="monster">
+                    <img src="<?= $monster->getImage() ?>" alt="monster">
+                    <figcaption><?= $monster->getName() . '(' . $monster->getLife() . ')' ?></figcaption>
+                </figure>
+                <progress class="life" max="100" value="<?= $monster->getLife() ?>"></progress>
+            </div>
             <?php endforeach; ?>
         </div>
 

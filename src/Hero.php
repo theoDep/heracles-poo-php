@@ -4,6 +4,7 @@ namespace App;
 
 use App\Shield;
 use App\Weapon;
+use App\Level;
 
 class Hero extends Fighter
 {
@@ -13,7 +14,8 @@ class Hero extends Fighter
     public function getDamage(): int
     {
         $damage = $this->getStrength();
-        if($this->getWeapon() !== null) {
+        if ($this->getWeapon() !== null)
+        {
             $damage += $this->getWeapon()->getDamage();
         }
         return $damage;
@@ -22,20 +24,22 @@ class Hero extends Fighter
     public function getDefense(): int
     {
         $defense = $this->getDexterity();
-        if ($this->getShield() !== null) {
+        if ($this->getShield() !== null)
+        {
             $defense += $this->getShield()->getProtection();
-        }    
+        }
 
         return $defense;
     }
 
     /**
      * Get the value of range
-     */ 
+     */
     public function getRange(): float
     {
         $range = $this->range;
-        if ($this->getWeapon() instanceof Weapon) {
+        if ($this->getWeapon() instanceof Weapon)
+        {
             $range += $this->getWeapon()->getRange();
         }
 
@@ -74,5 +78,15 @@ class Hero extends Fighter
     public function setShield(?Shield $shield): void
     {
         $this->shield = $shield;
+    }
+
+    public function getLevel(): int
+    {
+        return $this->level;
+    }
+
+    public function setLevel(int $level): void
+    {
+        $this->level = $level;
     }
 }
