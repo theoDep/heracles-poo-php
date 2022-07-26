@@ -6,6 +6,7 @@ use Exception;
 
 class Arena
 {
+    private array $tiles = [];
     public const DIRECTIONS = [
         'N' => [0, -1],
         'S' => [0, 1],
@@ -18,29 +19,34 @@ class Arena
 
     private int $size = 10;
 
-    public function __construct(Hero $hero, array $monsters)
+    public function __construct(Hero $hero, array $monsters, array $tiles = null)
     {
         $this->hero = $hero;
         $this->monsters = $monsters;
+        $this->tiles = $tiles;
     }
 
     public function move(Fighter $fighter, string $direction)
     {
         $x = $fighter->getX();
         $y = $fighter->getY();
-        if (!key_exists($direction, self::DIRECTIONS)) {
+        if (!key_exists($direction, self::DIRECTIONS))
+        {
             throw new Exception('Unknown direction');
         }
 
         $destinationX = $x + self::DIRECTIONS[$direction][0];
         $destinationY = $y + self::DIRECTIONS[$direction][1];
 
-        if ($destinationX < 0 || $destinationX >= $this->getSize() || $destinationY < 0 || $destinationY >= $this->getSize()) {
+        if ($destinationX < 0 || $destinationX >= $this->getSize() || $destinationY < 0 || $destinationY >= $this->getSize())
+        {
             throw new Exception('Out of Map');
         }
 
-        foreach ($this->getMonsters() as $monster) {
-            if ($monster->getX() == $destinationX && $monster->getY() == $destinationY) {
+        foreach ($this->getMonsters() as $monster)
+        {
+            if ($monster->getX() == $destinationX && $monster->getY() == $destinationY)
+            {
                 throw new Exception('Not free');
             }
         }
@@ -59,19 +65,28 @@ class Arena
     public function battle(int $id): void
     {
         $monster = $this->getMonsters()[$id];
-        if ($this->touchable($this->getHero(), $monster)) {
+        if ($this->touchable($this->getHero(), $monster))
+        {
             $this->getHero()->fight($monster);
-        } else {
+        }
+        else
+        {
             throw new Exception('Monster out of range');
         }
 
-        if (!$monster->isAlive()) {
+        if (!$monster->isAlive())
+        {
             $this->getHero()->setExperience($this->getHero()->getExperience() + $monster->getExperience());
             unset($this->monsters[$id]);
-        } else {
-            if ($this->touchable($monster, $this->getHero())) {
+        }
+        else
+        {
+            if ($this->touchable($monster, $this->getHero()))
+            {
                 $monster->fight($this->getHero());
-            } else {
+            }
+            else
+            {
                 throw new Exception('Hero out of range');
             }
         }
@@ -121,5 +136,14 @@ class Arena
     public function getSize(): int
     {
         return $this->size;
+    }
+
+    public function getTiles(): array
+    {
+        return $this->tiles;
+    }
+    public function setTiles(array $tiles): void
+    {
+        $this->tiles = $tiles;
     }
 }

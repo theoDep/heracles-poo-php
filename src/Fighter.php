@@ -4,7 +4,7 @@ namespace App;
 
 use App\Mappable;
 
-abstract class Fighter
+abstract class Fighter implements Mappable
 {
     public const MAX_LIFE = 100;
 
@@ -23,7 +23,7 @@ abstract class Fighter
     {
         $this->name = $name;
         $this->x = $x;
-        $this->y = $y;        
+        $this->y = $y;
     }
 
 
@@ -57,12 +57,12 @@ abstract class Fighter
     public function getImage(): string
     {
         return 'assets/images/' . $this->image;
-    }   
-    
+    }
+
     /**
      * Get the value of image
      */
-    public function setImage(string $image)
+    public function setImage(string $image): void
     {
         $this->image = $image;
     }
@@ -71,7 +71,8 @@ abstract class Fighter
     public function fight(Fighter $adversary): void
     {
         $damage = rand(1, $this->getDamage()) - $adversary->getDefense();
-        if ($damage < 0) {
+        if ($damage < 0)
+        {
             $damage = 0;
         }
         $adversary->setLife($adversary->getLife() - $damage);
@@ -91,7 +92,8 @@ abstract class Fighter
      */
     public function setLife(int $life)
     {
-        if ($life < 0) {
+        if ($life < 0)
+        {
             $life = 0;
         }
         $this->life = $life;
