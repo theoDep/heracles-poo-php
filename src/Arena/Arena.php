@@ -32,8 +32,10 @@ class Arena
 
     public function getTile(int $x, int $y): ?Tile
     {
-        foreach ($this->getTiles() as $tile) {
-            if ($tile->getX() === $x && $tile->getY() === $y) {
+        foreach ($this->getTiles() as $tile)
+        {
+            if ($tile->getX() === $x && $tile->getY() === $y)
+            {
                 return $tile;
             }
         }
@@ -45,8 +47,10 @@ class Arena
     {
         $this->move($this->getHero(), $direction);
 
-        foreach($this->getMonsters() as $monster) {
-            if ($monster instanceof Movable) {
+        foreach ($this->getMonsters() as $monster)
+        {
+            if ($monster instanceof Movable)
+            {
                 $randomDirection = array_rand(self::DIRECTIONS);
                 $this->move($monster, $randomDirection);
             }
@@ -62,16 +66,20 @@ class Arena
         $destinationY = $y + self::DIRECTIONS[$direction][1];
 
         $destinationTile = $this->getTile($destinationX, $destinationY);
-        if ($destinationTile instanceof Tile && !$destinationTile->isCrossable($movable)) {
+        if ($destinationTile instanceof Tile && !$destinationTile->isCrossable($movable))
+        {
             throw new Exception('Not crossable tile');
         }
 
-        if ($destinationX < 0 || $destinationX >= $this->getSize() || $destinationY < 0 || $destinationY >= $this->getSize()) {
+        if ($destinationX < 0 || $destinationX >= $this->getSize() || $destinationY < 0 || $destinationY >= $this->getSize())
+        {
             throw new Exception('Out of Map');
         }
 
-        foreach ($this->getMonsters() as $monster) {
-            if ($monster->getX() == $destinationX && $monster->getY() == $destinationY) {
+        foreach ($this->getMonsters() as $monster)
+        {
+            if ($monster->getX() == $destinationX && $monster->getY() == $destinationY)
+            {
                 throw new Exception('Not free');
             }
         }
@@ -90,19 +98,28 @@ class Arena
     public function battle(int $id): void
     {
         $monster = $this->getMonsters()[$id];
-        if ($this->touchable($this->getHero(), $monster)) {
+        if ($this->touchable($this->getHero(), $monster))
+        {
             $this->getHero()->fight($monster);
-        } else {
+        }
+        else
+        {
             throw new Exception('Monster out of range');
         }
 
-        if (!$monster->isAlive()) {
+        if (!$monster->isAlive())
+        {
             $this->getHero()->setExperience($this->getHero()->getExperience() + $monster->getExperience());
             unset($this->monsters[$id]);
-        } else {
-            if ($this->touchable($monster, $this->getHero())) {
+        }
+        else
+        {
+            if ($this->touchable($monster, $this->getHero()))
+            {
                 $monster->fight($this->getHero());
-            } else {
+            }
+            else
+            {
                 throw new Exception('Hero out of range');
             }
         }
@@ -144,5 +161,10 @@ class Arena
     public function getTiles(): array
     {
         return $this->tiles;
+    }
+
+    public function setTiles(array $tiles): void
+    {
+        $this->tiles = $tiles;
     }
 }

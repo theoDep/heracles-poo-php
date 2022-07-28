@@ -2,14 +2,14 @@
 
 namespace App\Inventory;
 
-class Shield
+class Shield implements Equipable
 {
     private int $protection = 10;
     private string $image = 'shield.svg';
 
     /**
      * Get the value of protection
-     */ 
+     */
     public function getProtection(): int
     {
         return $this->protection;
@@ -17,7 +17,7 @@ class Shield
 
     /**
      * Set the value of protection
-     */ 
+     */
     public function setProtection(int $protection): void
     {
         $this->protection = $protection;
@@ -25,7 +25,7 @@ class Shield
 
     /**
      * Get the value of image
-     */ 
+     */
     public function getImage(): string
     {
         return 'assets/images/' . $this->image;
@@ -34,7 +34,7 @@ class Shield
     /**
      * Set the value of image
      *
-     */ 
+     */
     public function setImage($image): void
     {
         $this->image = $image;

@@ -5,6 +5,7 @@ namespace App\Fighter;
 use App\Inventory\Shield;
 use App\Inventory\Weapon;
 use App\Movable;
+use App\Inventory\Equipable;
 
 class Hero extends Fighter implements Movable
 {
@@ -14,10 +15,13 @@ class Hero extends Fighter implements Movable
     protected int $dexterity = 6;
     protected string $image = 'heracles.svg';
 
+    protected ?Equipable $secondHand = null;
+
     public function getDamage(): int
     {
         $damage = $this->getStrength();
-        if($this->getWeapon() !== null) {
+        if ($this->getWeapon() !== null)
+        {
             $damage += $this->getWeapon()->getDamage();
         }
         return $damage;
@@ -26,20 +30,22 @@ class Hero extends Fighter implements Movable
     public function getDefense(): int
     {
         $defense = $this->getDexterity();
-        if ($this->getShield() !== null) {
+        if ($this->getShield() !== null)
+        {
             $defense += $this->getShield()->getProtection();
-        }    
+        }
 
         return $defense;
     }
 
     /**
      * Get the value of range
-     */ 
+     */
     public function getRange(): float
     {
         $range = $this->range;
-        if ($this->getWeapon() instanceof Weapon) {
+        if ($this->getWeapon() instanceof Weapon)
+        {
             $range += $this->getWeapon()->getRange();
         }
 
@@ -78,5 +84,15 @@ class Hero extends Fighter implements Movable
     public function setShield(?Shield $shield): void
     {
         $this->shield = $shield;
+    }
+
+    public function getSecondHand(): ?Equipable
+    {
+        return $this->secondHand;
+    }
+
+    public function setSecondHand(Equipable $accessory): void
+    {
+        $this->secondHand = $accessory;
     }
 }

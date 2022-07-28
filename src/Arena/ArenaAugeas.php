@@ -9,6 +9,8 @@ use App\Tile\Building;
 use App\Tile\Bush;
 use App\Tile\Grass;
 use App\Tile\Water;
+use App\Inventory\Shovel;
+use App\Tile\Tile;
 
 class ArenaAugeas extends Arena
 {
@@ -16,9 +18,11 @@ class ArenaAugeas extends Arena
     {
         $sword = new Weapon(10);
         $shield = new Shield();
+        $shovel = new Shovel(2);
         $hero = new Hero('Heracles', 0, 0);
         $hero->setWeapon($sword);
         $hero->setShield($shield);
+        $hero->setSecondHand($shovel);
 
         $monsters = [];
 
@@ -129,14 +133,100 @@ class ArenaAugeas extends Arena
         $buildings = [
             new Building(4, 8),
             new Building(5, 8),
-            new Building(6, 8), 
+            new Building(6, 8),
             new Building(4, 9),
             new Building(5, 9),
             new Building(6, 9),
         ];
-       
+
         $tiles = [...$waters, ...$grasses, ...$bushes, ...$buildings];
 
         parent::__construct($hero, $monsters, $tiles);
     }
+
+    public function digArena(): void
+    {
+        $hero = $this->getHero();
+        $x = $hero->getX();
+        $y = $hero->getY();
+        $tile = $this->getTile($x, $y);
+        $isTileGrass = $tile instanceof Grass;
+        $hasShovelEquipped = $hero->getSecondHand() instanceof Shovel;
+
+        if (!$isTileGrass)
+        {
+            throw new \Exception('You can only dig on grass');
+        }
+        if (!$hasShovelEquipped)
+        {
+            throw new \Exception('You need to equip a shovel');
+        }
+        if ($tile->isDigged() === true)
+        {
+            throw new \Exception('This tile has already been dug');
+        }
+
+        $tile->dig();
+        $this->fill($tile);
+
+    }
+
+    private function fill(Tile $tile): void
+    {
+        $adjacentTiles = $this->getAdjacentTiles($tile);
+
+        foreach ($adjacentTiles as $adjacentTile)
+        {
+            if ($adjacentTile instanceof Water)
+            {
+                $this->replaceTile($tile);
+            }
+        }
+
+    }
+
+    private function getAdjacentTiles(Tile $tile): array
+    {
+        $x = $tile->getX();
+        $y = $tile->getY();
+        $tiles = [];
+
+        foreach ($this->getTiles() as $tile)
+        {
+            $tileX = $tile->getX();
+            $tileY = $tile->getY();
+            $rangeX = [$x - 1, $x + 1];
+            $rangeY = [$y - 1, $y + 1];
+            if (in_array($tileX, $rangeX) && $tileY == $y)
+            {
+                $tiles[] = $tile;
+            }
+            if (in_array($tileY, $rangeY) && $tileX == $x)
+            {
+                $tiles[] = $tile;
+            }
+        }
+        return $tiles;
+    }
+
+    private function addTile(Tile $tile): void
+    {
+        $tiles = $this->getTiles();
+        $this->setTiles(array_merge($tiles, [$tile]));
+    }
+
+    private function removeTile(Tile $tile): void
+    {
+        $tiles = $this->getTiles();
+        $this->setTiles(array_filter($tiles, function ($t) use ($tile) {
+            return $t !== $tile;
+        }));
+    }
+
+    private function replaceTile(Tile $tile): void
+    {
+        $this->removeTile($tile);
+        $this->addTile(new Water($tile->getX(), $tile->getY()));
+    }
+
 }
