@@ -26,7 +26,7 @@ class Arena
         $this->tiles = $tiles;
     }
 
-    public function move(Fighter $fighter, string $direction)
+    public function move(Movable $fighter, string $direction)
     {
         $x = $fighter->getX();
         $y = $fighter->getY();
@@ -39,7 +39,7 @@ class Arena
         $destinationY = $y + self::DIRECTIONS[$direction][1];
         $destinationTile = $this->getTile($destinationX, $destinationY);
 
-        if (isset($destinationTile) && !$destinationTile->isCrossable())
+        if (isset($destinationTile) && !$destinationTile->isCrossable($fighter))
         {
             throw new Exception('You can\'t cross this tile');
         }
@@ -101,6 +101,18 @@ class Arena
     public function touchable(Fighter $attacker, Fighter $defenser): bool
     {
         return $this->getDistance($attacker, $defenser) <= $attacker->getRange();
+    }
+    public function arenaMove(string $destination): void
+    {
+        $this->move($this->getHero(), $destination);
+        foreach ($this->getMonsters() as $monster)
+        {
+            if ($monster instanceof Movable)
+            {
+                $destination = array_rand(self::DIRECTIONS);
+                $this->move($monster, $destination);
+            }
+        }
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App;
 
-class Hero extends Fighter
+class Hero extends Fighter implements Movable
 {
     private ?Weapon $weapon = null;
     private ?Shield $shield = null;
@@ -13,7 +13,8 @@ class Hero extends Fighter
     public function getDamage(): int
     {
         $damage = $this->getStrength();
-        if($this->getWeapon() !== null) {
+        if ($this->getWeapon() !== null)
+        {
             $damage += $this->getWeapon()->getDamage();
         }
         return $damage;
@@ -22,20 +23,22 @@ class Hero extends Fighter
     public function getDefense(): int
     {
         $defense = $this->getDexterity();
-        if ($this->getShield() !== null) {
+        if ($this->getShield() !== null)
+        {
             $defense += $this->getShield()->getProtection();
-        }    
+        }
 
         return $defense;
     }
 
     /**
      * Get the value of range
-     */ 
+     */
     public function getRange(): float
     {
         $range = $this->range;
-        if ($this->getWeapon() instanceof Weapon) {
+        if ($this->getWeapon() instanceof Weapon)
+        {
             $range += $this->getWeapon()->getRange();
         }
 

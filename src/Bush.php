@@ -8,4 +8,16 @@ class Bush extends Tile
     {
         parent::__construct($x, $y, 'bush.png', false);
     }
+
+    function isCrossable(Movable $movable): bool
+    {
+        if ($movable instanceof Hind)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
