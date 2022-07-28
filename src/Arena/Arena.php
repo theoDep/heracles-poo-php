@@ -8,7 +8,7 @@ use App\Movable;
 use App\Tile\Tile;
 use Exception;
 
-class Arena
+abstract class Arena
 {
     public const DIRECTIONS = [
         'N' => [0, -1],
@@ -167,4 +167,6 @@ class Arena
     {
         $this->tiles = $tiles;
     }
+
+    public abstract function isVictory(): bool;
 }

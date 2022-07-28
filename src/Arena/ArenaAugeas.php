@@ -14,6 +14,8 @@ use App\Tile\Tile;
 
 class ArenaAugeas extends Arena
 {
+    const VICTORY_X = 5;
+    const VICTORY_Y = 7;
     public function __construct()
     {
         $sword = new Weapon(10);
@@ -235,6 +237,18 @@ class ArenaAugeas extends Arena
     {
         $this->removeTile($tile);
         $this->addTile(new Water($tile->getX(), $tile->getY()));
+    }
+
+    public function isVictory(): bool
+    {
+        if ($this->getTile(self::VICTORY_X, self::VICTORY_Y) instanceof Water)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }
