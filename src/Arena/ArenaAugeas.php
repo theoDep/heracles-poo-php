@@ -180,7 +180,15 @@ class ArenaAugeas extends Arena
             if ($adjacentTile instanceof Water)
             {
                 $this->replaceTile($tile);
+                foreach ($adjacentTiles as $adjacentTile)
+                {
+                    if ($adjacentTile instanceof Grass && $adjacentTile->isDigged())
+                    {
+                        $this->fill($adjacentTile);
+                    }
+                }
             }
+
         }
 
     }
