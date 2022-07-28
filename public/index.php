@@ -122,6 +122,7 @@ if (!$arena instanceof Arena) {
     $tiles = [...$waters, ...$grasses, ...$bushes];
 
     $arena = new Arena($heracles, [$hind], $tiles);
+
 }
 
 $_SESSION['arena'] = $arena;
@@ -173,13 +174,13 @@ try {
                 </div>
             </a>
             <?php foreach ($arena->getMonsters() as $monster) : ?>
-                <div class="fighter">
-                    <figure class="monster">
-                        <img src="<?= $monster->getImage() ?>" alt="monster">
-                        <figcaption><?= $monster->getName() . '(' . $monster->getLife() . ')' ?></figcaption>
-                    </figure>
-                    <progress class="life" max="100" value="<?= $monster->getLife() ?>"></progress>
-                </div>
+            <div class="fighter">
+                <figure class="monster">
+                    <img src="<?= $monster->getImage() ?>" alt="monster">
+                    <figcaption><?= $monster->getName() . '(' . $monster->getLife() . ')' ?></figcaption>
+                </figure>
+                <progress class="life" max="100" value="<?= $monster->getLife() ?>"></progress>
+            </div>
             <?php endforeach; ?>
         </div>
 

@@ -37,6 +37,12 @@ class Arena
 
         $destinationX = $x + self::DIRECTIONS[$direction][0];
         $destinationY = $y + self::DIRECTIONS[$direction][1];
+        $destinationTile = $this->getTile($destinationX, $destinationY);
+
+        if (!isset($destinationTile) || !$destinationTile->isCrossable())
+        {
+            throw new Exception('You can\'t go there');
+        }
 
         if ($destinationX < 0 || $destinationX >= $this->getSize() || $destinationY < 0 || $destinationY >= $this->getSize())
         {
@@ -145,5 +151,17 @@ class Arena
     public function setTiles(array $tiles): void
     {
         $this->tiles = $tiles;
+    }
+
+    private function getTile($x, $y): ?Tile
+    {
+        foreach ($this->getTiles() as $tile)
+        {
+            if ($tile->getX() == $x && $tile->getY() == $y)
+            {
+                return $tile;
+            }
+        }
+        return null;
     }
 }
