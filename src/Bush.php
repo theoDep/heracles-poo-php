@@ -17,7 +17,7 @@ class Bush extends Tile
         }
         else
         {
-            return false;
+            return $this->crossable;
         }
     }
 }
