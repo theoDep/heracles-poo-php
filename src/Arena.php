@@ -39,9 +39,9 @@ class Arena
         $destinationY = $y + self::DIRECTIONS[$direction][1];
         $destinationTile = $this->getTile($destinationX, $destinationY);
 
-        if (!isset($destinationTile) || !$destinationTile->isCrossable())
+        if (isset($destinationTile) && !$destinationTile->isCrossable())
         {
-            throw new Exception('You can\'t go there');
+            throw new Exception('You can\'t cross this tile');
         }
 
         if ($destinationX < 0 || $destinationX >= $this->getSize() || $destinationY < 0 || $destinationY >= $this->getSize())
